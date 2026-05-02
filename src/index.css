@@ -51,11 +51,11 @@
     --watercolor-end: 0 0% 100%;
     --watercolor-accent: 0 0% 100%;
 
-    /* Glassmorphism */
-    --glass-bg: 0 0% 100% / 0.45;
-    --glass-border: 340 15% 90% / 0.6;
+    /* Glassmorphism - 흰 배경에서도 살짝 보이도록 미세한 회색 톤 */
+    --glass-bg: 30 8% 97%;
+    --glass-border: 30 10% 90%;
     --glass-blur: 20px;
-    --glass-shadow: 0 8px 32px 0 hsl(340 10% 50% / 0.06);
+    --glass-shadow: 0 4px 20px 0 hsl(30 5% 60% / 0.08);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;

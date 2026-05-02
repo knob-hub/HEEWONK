@@ -8,28 +8,52 @@ interface BGMPlayerProps {
 
 const BGMPlayer = ({ audioSrc }: BGMPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const startedRef = useRef(false);
 
+  // 첫 사용자 인터랙션(스크롤/터치/클릭) 시 자동 재생
+  // 브라우저는 사용자 상호작용 없이는 audio.play()를 막기 때문에 이 방식이 정석
   useEffect(() => {
-    const handleScroll = () => {
-      if (!hasInteracted && audioRef.current && audioSrc) {
-        setHasInteracted(true);
-        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
-      }
+    if (!audioSrc) return;
+
+    const tryPlay = () => {
+      if (startedRef.current || !audioRef.current) return;
+      startedRef.current = true;
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {
+          // 재생 실패 시 재시도 가능하도록 플래그 리셋
+          startedRef.current = false;
+        });
     };
-    window.addEventListener("scroll", handleScroll, { once: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [hasInteracted, audioSrc]);
+
+    // 다양한 이벤트에 모두 등록 (어떤 상호작용으로든 시작되게)
+    const events: (keyof WindowEventMap)[] = [
+      "scroll",
+      "touchstart",
+      "click",
+      "keydown",
+    ];
+    events.forEach((evt) =>
+      window.addEventListener(evt, tryPlay, { once: true, passive: true })
+    );
+
+    return () => {
+      events.forEach((evt) => window.removeEventListener(evt, tryPlay));
+    };
+  }, [audioSrc]);
 
   const togglePlay = () => {
     if (!audioRef.current || !audioSrc) return;
-    setHasInteracted(true);
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     }
   };
 
@@ -51,6 +75,7 @@ const BGMPlayer = ({ audioSrc }: BGMPlayerProps) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
+        aria-label={isPlaying ? "음악 끄기" : "음악 켜기"}
       >
         <AnimatePresence mode="wait">
           {isPlaying ? (

@@ -18,15 +18,14 @@ const AccountSection = () => {
   const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
 
   const groomAccounts: AccountInfo[] = [
-    { relation: "신랑", name: "김민준", bank: "신한은행", account: "110-123-456789" },
-    { relation: "신랑 아버지", name: "김철수", bank: "국민은행", account: "123-45-6789012" },
-    { relation: "신랑 어머니", name: "이영희", bank: "우리은행", account: "1002-123-456789" },
+    { relation: "신랑", name: "김희원", bank: "우리은행", account: "1002-444-045111" },
+    { relation: "신랑 아버지", name: "김정석", bank: "농협", account: "215055-52-201102" },
+    { relation: "신랑 어머니", name: "이미전", bank: "국민은행", account: "815-21-0744-708" },
   ];
 
   const brideAccounts: AccountInfo[] = [
-    { relation: "신부", name: "박서연", bank: "카카오뱅크", account: "3333-12-3456789" },
-    { relation: "신부 아버지", name: "박민수", bank: "하나은행", account: "123-456789-12345" },
-    { relation: "신부 어머니", name: "최지영", bank: "농협", account: "351-1234-5678-12" },
+    { relation: "신부", name: "최유정", bank: "국민은행", account: "569202-01-333879" },
+    { relation: "신부 아버지", name: "최상득", bank: "농협", account: "1066-12-001981" },
   ];
 
   const copyToClipboard = async (account: string) => {
@@ -92,7 +91,7 @@ const AccountSection = () => {
             >
               <div>
                 <p className="text-[10px] mb-0.5" style={{ color: "hsl(var(--muted-foreground))" }}>
-                  {acc.relation} · {acc.bank}
+                  {acc.relation} · {acc.bank} · {acc.name}
                 </p>
                 <p className="text-xs tracking-wider" style={{ color: "hsl(var(--foreground))" }}>{acc.account}</p>
               </div>

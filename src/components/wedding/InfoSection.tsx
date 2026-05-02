@@ -1,13 +1,9 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Navigation, Phone, Train, Car } from "lucide-react";
-import { GalleryButton } from "@/components/wedding/GallerySection";
+import GallerySection from "@/components/wedding/GallerySection";
 
-interface InfoSectionProps {
-  onGalleryOpen?: () => void;
-}
-
-const InfoSection = ({ onGalleryOpen }: InfoSectionProps) => {
+const InfoSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
@@ -46,12 +42,13 @@ const InfoSection = ({ onGalleryOpen }: InfoSectionProps) => {
           모든 분들에게 주님의 평강이 넘치길 축복합니다.
         </p>
 
-        {/* Gallery button */}
-        {onGalleryOpen &&
-        <div className="flex justify-center mb-10">
-            <GalleryButton onClick={onGalleryOpen} />
-          </div>
-        }
+        {/* Gallery grid */}
+        <div className="mb-14">
+          <p className="text-center text-[10px] tracking-[0.3em] uppercase mb-6 font-light" style={{ color: "hsl(var(--muted-foreground))" }}>
+            Gallery
+          </p>
+          <GallerySection />
+        </div>
 
         {/* Calendar */}
         <div className="mb-14">
