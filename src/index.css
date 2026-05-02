@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@100;300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 340 10% 20%;
+
+    --card: 30 20% 97%;
+    --card-foreground: 340 10% 20%;
+
+    --popover: 30 25% 96%;
+    --popover-foreground: 340 10% 20%;
+
+    --primary: 340 18% 55%;
+    --primary-foreground: 30 25% 97%;
+
+    --secondary: 30 15% 92%;
+    --secondary-foreground: 340 10% 25%;
+
+    --muted: 30 12% 90%;
+    --muted-foreground: 340 8% 50%;
+
+    --accent: 340 14% 65%;
+    --accent-foreground: 340 10% 20%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 340 10% 85%;
+    --input: 340 10% 85%;
+    --ring: 340 18% 55%;
+
+    --radius: 0.75rem;
+
+    /* Wedding tokens */
+    --blush: 340 20% 75%;
+    --blush-light: 340 18% 93%;
+    --cream: 30 25% 95%;
+    --gold: 35 30% 50%;
+    --gold-light: 35 25% 65%;
+    --sage: 140 8% 62%;
+    --text-romantic: 340 12% 28%;
+
+    /* Watercolor gradient */
+    --watercolor-start: 0 0% 100%;
+    --watercolor-mid: 0 0% 100%;
+    --watercolor-end: 0 0% 100%;
+    --watercolor-accent: 0 0% 100%;
+
+    /* Glassmorphism */
+    --glass-bg: 0 0% 100% / 0.45;
+    --glass-border: 340 15% 90% / 0.6;
+    --glass-blur: 20px;
+    --glass-shadow: 0 8px 32px 0 hsl(340 10% 50% / 0.06);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 340 5% 8%;
+    --foreground: 340 10% 90%;
+    --card: 340 5% 10%;
+    --card-foreground: 340 10% 90%;
+    --popover: 340 5% 10%;
+    --popover-foreground: 340 10% 90%;
+    --primary: 340 15% 60%;
+    --primary-foreground: 340 5% 8%;
+    --secondary: 340 5% 15%;
+    --secondary-foreground: 340 10% 90%;
+    --muted: 340 5% 15%;
+    --muted-foreground: 340 8% 55%;
+    --accent: 340 12% 50%;
+    --accent-foreground: 340 10% 90%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 340 5% 18%;
+    --input: 340 5% 18%;
+    --ring: 340 15% 60%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Gowun Batang', 'Cormorant Garamond', serif;
+  }
+}
+
+@layer components {
+  .wedding-section {
+    @apply py-24 px-6;
+  }
+
+  .section-label {
+    @apply text-[10px] tracking-[0.35em] uppercase font-light text-center mb-3;
+    color: hsl(var(--muted-foreground));
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .wedding-title {
+    @apply text-2xl font-light tracking-wider text-center mb-2;
+    color: hsl(var(--text-romantic));
+    font-family: 'Playfair Display', 'Gowun Batang', serif;
+    letter-spacing: 0.12em;
+  }
+
+  .wedding-divider {
+    @apply w-8 h-px mx-auto my-10;
+    background: hsl(var(--blush));
+  }
+
+  .wedding-card {
+    @apply rounded-3xl p-6;
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: var(--glass-shadow);
+  }
+
+  .account-btn {
+    @apply px-4 py-2 rounded-full text-xs transition-all duration-300;
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--glass-border));
+    color: hsl(var(--text-romantic));
+  }
+
+  .account-btn:hover {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: transparent;
+  }
+
+  .bg-cream {
+    background: hsl(var(--cream));
+  }
+
+  .editorial-number {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: hsl(var(--blush));
+  }
+
+  /* Watercolor background */
+  .watercolor-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 120% 80% at 20% 10%, hsl(var(--watercolor-start)) 0%, transparent 50%),
+      radial-gradient(ellipse 100% 60% at 80% 30%, hsl(var(--watercolor-accent) / 0.4) 0%, transparent 45%),
+      radial-gradient(ellipse 90% 70% at 50% 60%, hsl(var(--watercolor-mid)) 0%, transparent 50%),
+      radial-gradient(ellipse 110% 50% at 30% 90%, hsl(var(--watercolor-start) / 0.6) 0%, transparent 40%),
+      radial-gradient(ellipse 80% 60% at 70% 80%, hsl(var(--watercolor-accent) / 0.25) 0%, transparent 45%),
+      hsl(var(--watercolor-end));
+  }
+}
