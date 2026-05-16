@@ -1,28 +1,30 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, Images } from "lucide-react";
-import g1 from "@/assets/gallery-01.jpg";
-import g2 from "@/assets/gallery-02.jpg";
-import g3 from "@/assets/gallery-03.jpg";
-import g4 from "@/assets/gallery-04.jpg";
-import g5 from "@/assets/gallery-05.jpg";
-import g6 from "@/assets/gallery-06.jpg";
-import g7 from "@/assets/gallery-07.jpg";
-import g8 from "@/assets/gallery-08.jpg";
-import g9 from "@/assets/gallery-09.jpg";
 
-import t1 from "@/assets/thumbs/gallery-01.jpg";
-import t2 from "@/assets/thumbs/gallery-02.jpg";
-import t3 from "@/assets/thumbs/gallery-03.jpg";
-import t4 from "@/assets/thumbs/gallery-04.jpg";
-import t5 from "@/assets/thumbs/gallery-05.jpg";
-import t6 from "@/assets/thumbs/gallery-06.jpg";
-import t7 from "@/assets/thumbs/gallery-07.jpg";
-import t8 from "@/assets/thumbs/gallery-08.jpg";
-import t9 from "@/assets/thumbs/gallery-09.jpg";
+// ─────────────────────────────────────────────────────────────
+// 사진 자동 인식 (Vite import.meta.glob)
+// → src/assets/gallery-XX.jpg 와 src/assets/thumbs/gallery-XX.jpg 만
+//   추가/삭제하면 갤러리에 자동 반영됨. 코드 수정 불필요.
+// → 파일명은 반드시 2자리 숫자 (gallery-01.jpg, gallery-02.jpg, ...)
+// ─────────────────────────────────────────────────────────────
+const fullModules = import.meta.glob("../../assets/gallery-*.jpg", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
 
-const images = [g1, g2, g3, g4, g5, g6, g7, g8, g9];
-const thumbs = [t1, t2, t3, t4, t5, t6, t7, t8, t9];
+const thumbModules = import.meta.glob("../../assets/thumbs/gallery-*.jpg", {
+  eager: true,
+  import: "default",
+}) as Record<string, string>;
+
+const images = Object.entries(fullModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, src]) => src);
+
+const thumbs = Object.entries(thumbModules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, src]) => src);
 
 // 갤러리 버튼 (InfoSection에서 사용)
 export const GalleryButton = ({ onClick }: { onClick: () => void }) => (
@@ -41,15 +43,14 @@ export const GalleryOverlay = ({ onClose }: { onClose: () => void }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const touchX = useRef<number | null>(null);
 
-  // 풀스크린 진입 시 모든 풀 이미지 미리 로드 (전환 빠르게)
+  // 오버레이가 열리는 순간 풀이미지 백그라운드 프리로드
+  // → 썸네일 처음 누르는 순간에도 풀이미지가 캐시에서 즉시 표시됨
   useEffect(() => {
-    if (openIndex !== null) {
-      images.forEach((src) => {
-        const img = new Image();
-        img.src = src;
-      });
-    }
-  }, [openIndex]);
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   const go = useCallback(
     (dir: 1 | -1) => {
@@ -110,7 +111,7 @@ export const GalleryOverlay = ({ onClose }: { onClose: () => void }) => {
         </p>
       </div>
 
-      {/* 바둑판 그리드 */}
+      {/* 바둑판 그리드 — 즉시 로딩 + 빠른 페이드인 */}
       <div className="px-4 pb-12">
         <div className="grid grid-cols-3 gap-1.5 max-w-md mx-auto">
           {thumbs.map((thumb, i) => (
@@ -119,15 +120,15 @@ export const GalleryOverlay = ({ onClose }: { onClose: () => void }) => {
               onClick={() => setOpenIndex(i)}
               className="aspect-square overflow-hidden rounded-md relative"
               whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.04 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.25, delay: i * 0.015 }}
             >
               <img
                 src={thumb}
                 alt={`Photo ${i + 1}`}
-                loading="lazy"
                 decoding="async"
+                fetchPriority="high"
                 className="w-full h-full object-cover"
               />
             </motion.button>
