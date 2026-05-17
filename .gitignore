@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# 갤러리 원본 백업 (압축 스크립트가 자동 생성, git/배포에 포함 안 함)
+src/assets/originals/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

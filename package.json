@@ -9,10 +9,10 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "thumbs": "node scripts/generate-thumbs.mjs",
-    "predev": "node scripts/generate-thumbs.mjs",
-    "prebuild": "node scripts/generate-thumbs.mjs",
-    "prebuild:dev": "node scripts/generate-thumbs.mjs"
+    "gallery": "node scripts/optimize-gallery.mjs",
+    "predev": "node scripts/optimize-gallery.mjs",
+    "prebuild": "node scripts/optimize-gallery.mjs",
+    "prebuild:dev": "node scripts/optimize-gallery.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
