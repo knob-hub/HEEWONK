@@ -1,5 +1,5 @@
 import { motion, type Variants, type Easing } from "framer-motion";
-import couplePhoto from "@/assets/1.jpg";
+import couplePhoto from "@/assets/main.jpg";
 
 const ease: Easing = [0.25, 0.46, 0.45, 0.94];
 

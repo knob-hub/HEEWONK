@@ -133,25 +133,34 @@ async function generateThumbs(sourceFiles) {
   return { generated, skipped, removed };
 }
 
+// 갤러리 외에 추가로 압축할 사진 (메인 사진 등 — 썸네일은 생성하지 않음)
+const EXTRA_PHOTOS = ["main.jpg"];
+
 async function main() {
   await ensureDir(THUMBS_DIR);
   await ensureDir(ORIGINALS_DIR);
 
-  const sourceFiles = (await readdir(SRC_DIR)).filter(isGalleryJpg);
+  const galleryFiles = (await readdir(SRC_DIR)).filter(isGalleryJpg);
+  const extraFiles = EXTRA_PHOTOS.filter((f) => existsSync(join(SRC_DIR, f)));
 
-  if (sourceFiles.length === 0) {
-    console.log("[gallery] 원본 사진 없음 (src/assets/gallery-*.jpg)");
+  if (galleryFiles.length === 0 && extraFiles.length === 0) {
+    console.log("[gallery] 처리할 사진 없음");
     return;
   }
 
-  console.log(`[gallery] 사진 ${sourceFiles.length}장 검사 중...`);
+  console.log(
+    `[gallery] 갤러리 ${galleryFiles.length}장 + 메인 ${extraFiles.length}장 검사 중...`
+  );
 
-  const c = await compressOriginals(sourceFiles);
-  const t = await generateThumbs(sourceFiles);
+  const cGallery = await compressOriginals(galleryFiles);
+  const cExtra = await compressOriginals(extraFiles);
+  const t = await generateThumbs(galleryFiles);
 
+  const totalSaved = cGallery.totalSavedBytes + cExtra.totalSavedBytes;
   console.log(
     `[gallery] 완료 — ` +
-      `압축 ${c.compressed} (${fmt(c.totalSavedBytes)} 절약) · 이미 최적 ${c.alreadyOptimized} | ` +
+      `압축 ${cGallery.compressed + cExtra.compressed} (${fmt(totalSaved)} 절약) · ` +
+      `이미 최적 ${cGallery.alreadyOptimized + cExtra.alreadyOptimized} | ` +
       `썸네일 생성 ${t.generated} · 최신 ${t.skipped} · 정리 ${t.removed}`
   );
 }
